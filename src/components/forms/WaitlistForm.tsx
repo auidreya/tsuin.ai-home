@@ -58,7 +58,7 @@ export function WaitlistForm({ compact = false }: WaitlistFormProps) {
   const onSubmit = async (data: FormData) => {
     setState('loading')
     try {
-      const res = await fetch('/api/waitlist', {
+      const res = await fetch('/api/waitlist/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: data.email }),

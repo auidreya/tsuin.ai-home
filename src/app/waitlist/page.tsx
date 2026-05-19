@@ -436,7 +436,7 @@ export default function WaitlistPage() {
   async function submit(data: Answers) {
     setSubmitting(true)
     try {
-      await fetch('/api/waitlist-responses', {
+      await fetch('/api/waitlist-responses/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),

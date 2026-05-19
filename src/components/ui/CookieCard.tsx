@@ -5,39 +5,11 @@ import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { ChevronDown, ChevronUp, Cookie } from 'lucide-react'
 
-type ConsentPayload = {
-  analytics: boolean
-  marketing: boolean
-}
-
-function getOrCreateSessionId(): string {
-  const key = 'tsuin_session_id'
-  let id = localStorage.getItem(key)
-  if (!id) {
-    id = crypto.randomUUID()
-    localStorage.setItem(key, id)
-  }
-  return id
-}
-
 function saveLocal(analytics: boolean, marketing: boolean) {
   localStorage.setItem(
     'tsuin_cookie_consent',
     JSON.stringify({ essential: true, analytics, marketing, timestamp: new Date().toISOString() }),
   )
-}
-
-async function persistConsent(payload: ConsentPayload) {
-  const session_id = getOrCreateSessionId()
-  try {
-    await fetch('/api/cookie-consent', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ session_id, ...payload }),
-    })
-  } catch {
-    // non-blocking — consent is already saved locally
-  }
 }
 
 function Toggle({
@@ -106,10 +78,9 @@ export function CookieCard() {
 
   if (!open) return null
 
-  async function handleConsent(analyticsVal: boolean, marketingVal: boolean) {
+  function handleConsent(analyticsVal: boolean, marketingVal: boolean) {
     setSaving(true)
     saveLocal(analyticsVal, marketingVal)
-    await persistConsent({ analytics: analyticsVal, marketing: marketingVal })
     setSaving(false)
     setOpen(false)
   }

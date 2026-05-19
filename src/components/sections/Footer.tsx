@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { fadeUp, staggerContainer } from '@/components/animations/variants'
+import { toast } from 'sonner'
 
 const SOCIALS = [
   { label: 'TWITTER / X', href: 'https://x.com/tsuinAI' },
@@ -24,6 +25,30 @@ const NAV_RIGHT = [
 
 export function Footer() {
   const [email, setEmail] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email) return
+    setLoading(true)
+    try {
+      const res = await fetch('/api/waitlist/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+      if (!res.ok) {
+        const err = await res.json()
+        throw new Error(err.message || 'Something went wrong')
+      }
+      toast.success('You\'re on the list!')
+      setEmail('')
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Failed to join.')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <footer className="bg-[#1a1b26] px-[24px] pt-[40px] pb-[48px]">
@@ -97,8 +122,9 @@ export function Footer() {
 
         {/* Email form */}
         <motion.div variants={fadeUp} custom={0.2} className="mb-[16px]">
-          <div
-            id="footer-email-input"
+          <form
+            id="footer-email-form"
+            onSubmit={handleSubmit}
             className="flex items-center border border-[#797ea6]/50 w-full"
           >
             <input
@@ -106,15 +132,17 @@ export function Footer() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="EMAIL ADDRESS"
+              required
               className="flex-1 bg-transparent px-[16px] py-[14px] font-mono font-bold text-[13px] text-[#cbd1e6] placeholder:text-[#797ea6]/70 outline-none tracking-widest uppercase"
             />
             <button
-              type="button"
-              className="px-[16px] py-[14px] font-mono font-bold text-[13px] text-[#7aa2f7] tracking-widest whitespace-nowrap hover:text-[#cbd1e6] transition-colors"
+              type="submit"
+              disabled={loading}
+              className="px-[16px] py-[14px] font-mono font-bold text-[13px] text-[#7aa2f7] tracking-widest whitespace-nowrap hover:text-[#cbd1e6] transition-colors disabled:opacity-50"
             >
-              SUBMIT →
+              {loading ? 'WAIT...' : 'SUBMIT →'}
             </button>
-          </div>
+          </form>
         </motion.div>
 
         {/* Fine print */}

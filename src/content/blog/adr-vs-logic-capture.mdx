@@ -1,0 +1,30 @@
+---
+title: "ADRs Are Great. So Why Does No One Fill Them In?"
+category: Engineering
+author: Tsuin Team
+date: "2026-01-20"
+readTime: "4 min read"
+color: from-pink-500/30 to-rose-400/10
+---
+
+Architecture Decision Records were supposed to solve the context problem. Write down why you made each significant technical decision. Future engineers read the ADR. They understand the context. Everyone's happy.
+
+It doesn't work like that in practice.
+
+## The gap between intention and behavior
+
+ADRs fail for the same reason most documentation fails: writing them requires switching out of the flow of work. You've just spent four hours reasoning through a hard architectural decision. You've finally landed on an approach. The last thing you want to do is write a structured document explaining your reasoning.
+
+So you don't. Or you write a two-sentence ADR that captures the decision but not the reasoning. Or you write it three weeks later when the details are fuzzy.
+
+## What actually gets captured
+
+The reasoning that should be in ADRs *is* captured — just not in ADRs. It's in the Slack thread from the afternoon you were debugging the problem. It's in the code review where someone pushed back and you explained your thinking. It's in the async doc you wrote to get alignment from the team.
+
+The reasoning exists. It's just scattered, unlabeled, and inaccessible when someone needs it six months later.
+
+## Capture at the source
+
+The fix isn't a better ADR template. It's capturing reasoning where it actually happens — in the natural flow of how engineers communicate — and making it searchable and attributable later.
+
+That's the design principle behind Tsuin. Not another documentation system. A system that learns from how you already work, so that when the question comes — *why did we build it this way?* — the answer is already there.

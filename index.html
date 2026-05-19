@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tsuin.AI — Cognitive AI Twin</title>
+  <style>
+    @font-face {
+      font-family: 'CobolW00';
+      src: url('assets/font/Cobol W00 Light copy.ttf') format('truetype');
+      font-weight: 300;
+    }
+    @font-face {
+      font-family: 'CobolW00';
+      src: url('assets/font/Cobol W00 Medium copy.ttf') format('truetype');
+      font-weight: 500;
+    }
+    @font-face {
+      font-family: 'CobolW00';
+      src: url('assets/font/Cobol W00 Bold copy.ttf') format('truetype');
+      font-weight: 700;
+    }
+    @font-face {
+      font-family: 'FunnelDisplay';
+      src: url('assets/font/FunnelDisplay-VariableFont_wght copy.ttf') format('truetype');
+      font-weight: 100 900;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #111010;
+      --teal: #4ecdc4;
+      --text: #d8d4cc;
+      --muted: #6e6a62;
+      --font-mono: 'CobolW00', 'Courier New', monospace;
+      --font-display: 'FunnelDisplay', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-mono);
+      overflow-x: hidden;
+      /* account for fixed CTA bar at bottom */
+      padding-bottom: 64px;
+    }
+
+    /* ─────────────────────────────────────────
+       NAV
+    ───────────────────────────────────────── */
+    nav {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 20px;
+    }
+
+    .nav-logo img {
+      height: 26px;
+      display: block;
+    }
+
+    .nav-status {
+      display: flex;
+      align-items: flex-start;
+      gap: 7px;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.06em;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .nav-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #4ade80;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .nav-hamburger {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .nav-hamburger span {
+      display: block;
+      width: 20px; height: 1.5px;
+      background: var(--text);
+    }
+
+    /* ─────────────────────────────────────────
+       HERO
+    ───────────────────────────────────────── */
+    .hero {
+      position: relative;
+      width: 100%;
+      min-height: 100svh;
+      overflow: hidden;
+    }
+
+    .hero-img {
+      width: 100%;
+      height: 100%;
+      min-height: 100svh;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+
+    /* screens overlaid on hero */
+    .hero-overlays {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .paper {
+      position: absolute;
+      width: 36%;
+      max-width: 160px;
+      opacity: 0.88;
+    }
+
+    .paper-1 { top: 14%; left: 3%; transform: rotate(-6deg); }
+    .paper-2 { top: 28%; left: 1%; transform: rotate(4deg); }
+    .paper-3 { top: 44%; left: 5%; transform: rotate(-3deg); }
+    .paper-4 { top: 60%; left: 1%; transform: rotate(5deg); }
+    .paper-5 { top: 74%; left: 6%; transform: rotate(-2deg); }
+
+    .screen {
+      position: absolute;
+      width: 44%;
+      max-width: 190px;
+      right: 3%;
+      opacity: 0.96;
+    }
+
+    .screen-1 { top: 31%; }
+    .screen-2 { top: 46%; }
+    .screen-3 { top: 61%; }
+    .screen-4 { top: 75%; }
+
+    /* corner brackets */
+    .bracket {
+      position: absolute;
+      width: 14px; height: 14px;
+      border-color: var(--teal);
+      border-style: solid;
+      opacity: 0.65;
+    }
+
+    .bracket-tl { top: 56px; left: 0;  border-width: 1px 0 0 1px; }
+    .bracket-tr { top: 56px; right: 0; border-width: 1px 1px 0 0; }
+    .bracket-bl { bottom: 72px; left: 0;  border-width: 0 0 1px 1px; }
+    .bracket-br { bottom: 72px; right: 0; border-width: 0 1px 1px 0; }
+
+    /* hero text — bottom overlay */
+    .hero-text {
+      position: absolute;
+      bottom: 72px;
+      left: 0; right: 0;
+      padding: 48px 20px 0;
+      background: linear-gradient(to bottom, transparent 0%, rgba(10,10,10,0.75) 40%, rgba(10,10,10,0.92) 100%);
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(54px, 15vw, 84px);
+      line-height: 0.92;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+
+    .hero-title .line2 {
+      display: block;
+      text-align: right;
+    }
+
+    .hero-subtitle {
+      text-align: right;
+      font-family: var(--font-mono);
+      font-weight: 300;
+      font-size: 13px;
+      color: #bbb;
+      margin-top: 10px;
+      font-style: italic;
+      letter-spacing: 0.02em;
+    }
+
+    /* ─────────────────────────────────────────
+       FIXED CTA BAR
+    ───────────────────────────────────────── */
+    .cta-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--bg);
+      padding: 12px 20px;
+    }
+
+    .cta-bar a {
+      display: block;
+      width: 100%;
+      text-align: center;
+      background: var(--teal);
+      color: #000;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 15px;
+    }
+
+    /* ─────────────────────────────────────────
+       ERA SECTIONS
+    ───────────────────────────────────────── */
+    .era {
+      padding: 72px 24px 64px;
+      background: var(--bg);
+    }
+
+    .era + .era {
+      border-top: 1px solid #1e1e1e;
+    }
+
+    .era-label {
+      font-family: var(--font-mono);
+      font-weight: 300;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      margin-bottom: 36px;
+    }
+
+    .era-body {
+      font-family: var(--font-mono);
+      font-weight: 300;
+      font-size: 17px;
+      line-height: 1.75;
+      color: #b0aca4;
+      margin-bottom: 48px;
+    }
+
+    .era-body p + p { margin-top: 20px; }
+
+    /* octagonal image frame */
+    .img-frame {
+      position: relative;
+      width: 88%;
+      margin: 0 auto;
+    }
+
+    .img-frame::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      background: var(--teal);
+      clip-path: polygon(
+        22px 0%,
+        100% 0%,
+        100% calc(100% - 28px),
+        calc(100% - 28px) 100%,
+        0% 100%,
+        0% 22px
+      );
+      z-index: 0;
+    }
+
+    .img-frame img {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      display: block;
+      clip-path: polygon(
+        22px 0%,
+        100% 0%,
+        100% calc(100% - 28px),
+        calc(100% - 28px) 100%,
+        0% 100%,
+        0% 22px
+      );
+    }
+
+    /* ─────────────────────────────────────────
+       HOW IT WORKS
+    ───────────────────────────────────────── */
+    .how {
+      padding: 72px 24px 64px;
+      background: var(--bg);
+      border-top: 1px solid #1e1e1e;
+    }
+
+    .section-eyebrow {
+      font-family: var(--font-mono);
+      font-weight: 500;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 48px;
+    }
+
+    .step {
+      padding-bottom: 40px;
+      margin-bottom: 40px;
+      border-bottom: 1px solid #1e1e1e;
+    }
+
+    .step:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .step-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--teal);
+      letter-spacing: 0.1em;
+      margin-bottom: 10px;
+    }
+
+    .step-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 30px;
+      color: #fff;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+
+    .step-body {
+      font-family: var(--font-mono);
+      font-weight: 300;
+      font-size: 14px;
+      line-height: 1.75;
+      color: #7a7670;
+    }
+
+    /* ─────────────────────────────────────────
+       FINAL CTA
+    ───────────────────────────────────────── */
+    .final-cta {
+      padding: 80px 24px 80px;
+      background: #0c0c0c;
+      border-top: 1px solid #1e1e1e;
+    }
+
+    .final-cta-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .final-cta-headline {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(40px, 11vw, 56px);
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: #fff;
+      margin-bottom: 24px;
+    }
+
+    .final-cta-body {
+      font-family: var(--font-mono);
+      font-weight: 300;
+      font-size: 14px;
+      line-height: 1.8;
+      color: #6e6a62;
+      margin-bottom: 44px;
+    }
+
+    .final-cta-btn {
+      display: block;
+      width: 100%;
+      background: var(--teal);
+      color: #000;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      text-align: center;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .final-cta-note {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    /* ─────────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────────── */
+    footer {
+      background: #e8eaf0;
+      color: #111;
+      padding: 48px 24px 40px;
+    }
+
+    .footer-intro {
+      font-family: var(--font-display);
+      font-size: 19px;
+      font-weight: 400;
+      line-height: 1.55;
+      color: #1a1a1a;
+      margin-bottom: 64px;
+    }
+
+    .footer-socials {
+      margin-bottom: 64px;
+    }
+
+    .footer-socials a {
+      display: block;
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: clamp(42px, 13vw, 68px);
+      line-height: 1.02;
+      color: #111;
+      text-decoration: none;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+      transition: color 0.15s;
+    }
+
+    .footer-socials a:hover { color: #555; }
+
+    .footer-nav {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 52px;
+    }
+
+    .footer-nav-col {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .footer-nav-col a {
+      font-family: 'CobolW00', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #333;
+      text-decoration: none;
+    }
+
+    .footer-nav-col.right { text-align: right; }
+
+    .footer-mailing-label {
+      font-family: 'CobolW00', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #333;
+      line-height: 1.7;
+      margin-bottom: 14px;
+    }
+
+    .footer-email-row {
+      display: flex;
+      align-items: center;
+      border: 1px solid #999;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+    }
+
+    .footer-email-row input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: 'CobolW00', monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #444;
+    }
+
+    .footer-email-row input::placeholder { color: #bbb; }
+
+    .footer-email-row button {
+      background: transparent;
+      border: none;
+      font-family: 'CobolW00', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #111;
+      cursor: pointer;
+      padding-left: 12px;
+    }
+
+    .footer-legal {
+      font-family: var(--font-display);
+      font-size: 12px;
+      color: #999;
+      line-height: 1.5;
+    }
+
+    .footer-legal a {
+      color: #666;
+      text-decoration: underline;
+    }
+
+    .footer-bottom {
+      margin-top: 44px;
+      padding-top: 18px;
+      border-top: 1px solid #ccc;
+      font-family: 'CobolW00', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: #aaa;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ── -->
+  <nav>
+    <div class="nav-logo">
+      <img src="assets/tsuin.ai-logo copy.ai/tsuin-white-horizontal-full.png" alt="Tsuin.AI">
+    </div>
+    <div class="nav-status">
+      <span class="nav-dot"></span>
+      <span>INITIALIZING<br>CLOSED BETA ACCESS</span>
+    </div>
+    <div class="nav-hamburger">
+      <span></span>
+      <span></span>
+    </div>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <img class="hero-img" src="assets/home-header-image.png" alt="Cognitive AI Twin">
+
+    <div class="hero-overlays">
+      <!-- burned paper screens — left side -->
+      <img class="paper paper-1" src="assets/burned-paper-screen/10.png" alt="">
+      <img class="paper paper-2" src="assets/burned-paper-screen/11.png" alt="">
+      <img class="paper paper-3" src="assets/burned-paper-screen/Untitled design (8).png" alt="">
+      <img class="paper paper-4" src="assets/burned-paper-screen/Untitled design (11).png" alt="">
+      <img class="paper paper-5" src="assets/burned-paper-screen/Untitled design (12).png" alt="">
+
+      <!-- cyberpunk terminal cards — right side -->
+      <img class="screen screen-1" src="assets/cyberpunk-screen/1.png" alt="">
+      <img class="screen screen-2" src="assets/cyberpunk-screen/2.png" alt="">
+      <img class="screen screen-3" src="assets/cyberpunk-screen/3.png" alt="">
+      <img class="screen screen-4" src="assets/cyberpunk-screen/4.png" alt="">
+
+      <!-- corner brackets -->
+      <div class="bracket bracket-tl"></div>
+      <div class="bracket bracket-tr"></div>
+      <div class="bracket bracket-bl"></div>
+      <div class="bracket bracket-br"></div>
+    </div>
+
+    <div class="hero-text">
+      <h1 class="hero-title">
+        COGNITIVE
+        <span class="line2">AI TWIN</span>
+      </h1>
+      <p class="hero-subtitle">Clone the way you think.</p>
+    </div>
+  </section>
+
+  <!-- ── FIXED CTA BAR ── -->
+  <div class="cta-bar">
+    <a href="#waitlist">JOIN BETA WAITLIST</a>
+  </div>
+
+  <!-- ── PRE-AGI ERA ── -->
+  <section class="era">
+    <p class="era-label">// Pre-AGI ERA</p>
+    <div class="era-body">
+      <p>We stopped writing code, but we must still fix it.</p>
+      <p>AI generates everything, but when it breaks, the codebase is too massive to comprehend.</p>
+      <p>How do you debug what you can't understand?</p>
+      <p>Your AI Twin was trained on your context and decisions before you even knew you needed it.</p>
+    </div>
+    <div class="img-frame">
+      <img src="assets/Home(1).png" alt="Pre-AGI ERA — developer at work">
+    </div>
+  </section>
+
+  <!-- ── AGI ERA ── -->
+  <section class="era">
+    <p class="era-label">// AGI ERA</p>
+    <div class="era-body">
+      <p>AI will build entire systems overnight, but it still needs you when things break.</p>
+      <p>When complex errors occur, humans excel at navigating that ambiguity.</p>
+      <p>Your AI Twin bridges the gap, translating your intuition so you stay in control.</p>
+    </div>
+    <div class="img-frame">
+      <img src="assets/Home(2).png" alt="AGI ERA — Shibasuke in the control room">
+    </div>
+  </section>
+
+  <!-- ── POST-AGI ERA ── -->
+  <section class="era">
+    <p class="era-label">// POST-AGI ERA</p>
+    <div class="era-body">
+      <p>In a world where AGI acts freely and machines become fully autonomous, humans will be left out of the loop.</p>
+      <p>When the system fails in a way we don't understand, your AI Twin is there to act as your representative to protect you.</p>
+    </div>
+    <div class="img-frame">
+      <img src="assets/Home(3).png" alt="Post-AGI ERA — defending humanity">
+    </div>
+  </section>
+
+  <!-- ── HOW IT WORKS ── -->
+  <section class="how">
+    <p class="section-eyebrow">HOW IT WORKS</p>
+
+    <div class="step">
+      <p class="step-num">— 01</p>
+      <h3 class="step-title">Tell It</h3>
+      <p class="step-body">Talk to your AI Twin like you'd talk to a co-founder. Share your context, your decisions, your reasoning. It listens without judgment. It never forgets.</p>
+    </div>
+
+    <div class="step">
+      <p class="step-num">— 02</p>
+      <h3 class="step-title">It Learns</h3>
+      <p class="step-body">Over time, your Twin builds a model of how you think — not just what you know, but how you arrive at answers. Your mental models, your instincts, your shortcuts.</p>
+    </div>
+
+    <div class="step">
+      <p class="step-num">— 03</p>
+      <h3 class="step-title">It Has Your Back</h3>
+      <p class="step-body">When you're stuck, overwhelmed, or facing something too large to hold in your head alone — your Twin is already there. With your context. With your history. With you.</p>
+    </div>
+  </section>
+
+  <!-- ── FINAL CTA ── -->
+  <section class="final-cta" id="waitlist">
+    <p class="final-cta-eyebrow">YOU WILL NEED THIS.<br>NOT EVENTUALLY. NOW.</p>
+    <h2 class="final-cta-headline">CLAIM YOUR<br>COGNITIVE<br>AI TWIN</h2>
+    <p class="final-cta-body">
+      The era of cognitive overload is already here.<br>
+      The developers who survive it won't be the ones who work harder —<br>
+      they'll be the ones who have a Twin.
+    </p>
+    <a href="#" class="final-cta-btn">JOIN THE BETA WAITLIST →</a>
+    <p class="final-cta-note">CLOSED BETA &nbsp;·&nbsp; LIMITED ACCESS</p>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <p class="footer-intro">
+      Your thinking is your most valuable asset. Don't let it fade. Build a Twin that carries it forward — through every era of AI.
+    </p>
+
+    <div class="footer-socials">
+      <a href="#">TWITTER / X</a>
+      <a href="#">LINKEDIN</a>
+      <a href="#">GITHUB</a>
+      <a href="#">DISCORD</a>
+    </div>
+
+    <nav class="footer-nav">
+      <div class="footer-nav-col">
+        <a href="#">HOME</a>
+        <a href="#">PRODUCT</a>
+        <a href="#">MANIFESTO</a>
+      </div>
+      <div class="footer-nav-col right">
+        <a href="#">BLOG</a>
+        <a href="#">CAREERS</a>
+        <a href="#">LEGALS</a>
+      </div>
+    </nav>
+
+    <p class="footer-mailing-label">
+      JOIN THE BETA AND BE THE FIRST<br>
+      TO BUILD YOUR COGNITIVE AI TWIN.
+    </p>
+
+    <div class="footer-email-row">
+      <input type="email" placeholder="EMAIL ADDRESS">
+      <button type="button">OK</button>
+    </div>
+
+    <p class="footer-legal">
+      By subscribing, you understand and agree to our <a href="#">Privacy Policy</a>
+    </p>
+
+    <div class="footer-bottom">
+      © 2026 TSUIN.AI &nbsp;·&nbsp; ALL RIGHTS RESERVED
+    </div>
+  </footer>
+
+</body>
+</html>

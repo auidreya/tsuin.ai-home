@@ -1,0 +1,36 @@
+---
+title: "Why We Built Tsuin"
+subtitle: "Every engineer has inherited a codebase and wished the previous team left better breadcrumbs. We kept wishing for a tool that captured the reasoning — not just the code — so we built it."
+category: Company
+author: Tsuin Team
+date: "2026-02-12"
+readTime: "5 min read"
+color: from-violet-500/30 via-indigo-500/20 to-purple-400/10
+featured: true
+---
+
+There's a moment every engineer knows. You open a file you've never touched, read a block of code that seems almost wrong, and start to refactor it — only to find a comment three commits back that says *do not change this, see incident #231*. You stop. You go read the incident. An hour later, you understand why the code looks the way it does.
+
+Most of the time, there's no comment. There's no incident log. There's just code and silence.
+
+## The real cost isn't the code
+
+When an engineer leaves a team, the codebase stays. The tests stay. The architecture diagrams — if they exist — stay. But the *reasoning* leaves with the person.
+
+Why was this service split in two? Why did we pick this library over that one? Why does this endpoint return 200 on what looks like an error? These aren't answers you can find in a git diff. They live in people's heads, in Slack threads that scroll off, in Zoom calls that were never recorded.
+
+Audrey felt this firsthand as a product manager. A key engineer left mid-sprint. The project stalled not because anyone lacked technical skill — but because no one could reconstruct the decisions that had already been made. She didn't get her promotion that cycle. The project shipped six months late.
+
+## A twin that holds the context
+
+Tsuin (双) means twin in Japanese. That name comes from a simple idea: what if you had a second version of yourself that remembered everything you decided, and why you decided it?
+
+Not an assistant that helps you work. Not a copilot that autocompletes your code. A **cognitive twin** — trained on your reasoning, your communication patterns, your architecture decisions — that can speak for you when you're not in the room. When a new engineer asks why this module works the way it does, your Twin answers. When you return from vacation and need to context-switch, your Twin catches you up.
+
+## What we're building
+
+We're in closed beta right now, working with a small group of engineering teams. The system ingests your communications, your commits, your architecture decisions, and builds a personal knowledge graph — one that grows more accurate the more you use it.
+
+The goal isn't to replace you. It's to make sure *you* don't get lost when the codebase grows past what one head can hold.
+
+If that resonates, [join the waitlist](/waitlist).

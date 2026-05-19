@@ -1,0 +1,39 @@
+---
+title: "Why Your AI Dev Tool Should Be Local-First"
+subtitle: "Sending your codebase to a third-party server is a trade-off most teams aren't consciously making."
+category: Product
+author: Tsuin Team
+date: "2026-01-28"
+readTime: "6 min read"
+color: from-orange-500/30 to-amber-400/10
+---
+
+Every time a developer accepts a suggestion from a cloud-based AI coding assistant, a copy of their code travels to someone else's server. This happens thousands of times a day on active teams. Most engineers don't think about it. Most companies haven't made a conscious decision about it.
+
+That's the problem.
+
+## What you're actually sending
+
+When you use a cloud AI tool that has context about your codebase, you're typically sending:
+
+- File contents (sometimes your entire project)
+- Variable names, function signatures, business logic
+- Database schemas embedded in query strings
+- API keys that appear in code (it happens)
+- Comments that reference internal systems, customers, or architectural decisions
+
+The AI provider may have policies about not training on your data. Those policies may or may not be enforced. They may change. The data still travels. It still lands on infrastructure you don't control.
+
+## The trade-off that isn't being made explicitly
+
+The frustrating thing isn't that teams use cloud AI tools. The trade-off is often worth making. The frustrating thing is that **most teams haven't consciously made the trade-off** — they've just adopted tools without thinking through the data implications.
+
+For a startup building a side project, this is probably fine. For a company handling healthcare data, financial records, or anything under a compliance regime, this matters a lot.
+
+## Local-first doesn't mean offline
+
+Local-first AI tooling processes your codebase on your infrastructure — whether that's your developer's laptop, your company's on-premise servers, or a VPC you control. The model can still be state-of-the-art. The reasoning can still be sophisticated. The difference is that your code never leaves your perimeter.
+
+For Tsuin's Twin, this is foundational. Your cognitive context — your decisions, your reasoning, your architectural history — is yours. It lives where you say it lives. It doesn't cross a network boundary without your explicit permission.
+
+If you're evaluating AI dev tools, add this question to your checklist: *Where does our code go, and who sees it?* You might be surprised how few vendors have a clear answer.

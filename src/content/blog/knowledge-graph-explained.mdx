@@ -1,0 +1,32 @@
+---
+title: "How Tsuin Builds a Knowledge Graph From Your Git History"
+category: Concepts
+author: Tsuin Team
+date: "2025-12-18"
+readTime: "7 min read"
+color: from-cyan-500/30 to-teal-400/10
+---
+
+Every commit you've ever made is a data point. Not just about what changed — about *who changed it, when, in response to what, with what intention*. Most tools treat git history as a log. We treat it as the raw material for something more interesting: a knowledge graph of how a codebase evolves and why.
+
+## What a knowledge graph captures
+
+A knowledge graph isn't a list of facts. It's a network of entities and relationships — where the relationships carry as much information as the entities themselves.
+
+For a software codebase, the entities are things like: files, modules, functions, services, engineers, decisions, incidents. The relationships are things like: *this engineer authored that module*, *that module was refactored after this incident*, *this decision was made to address that constraint*.
+
+When you ask "why does this service work this way?", the answer isn't in any single node. It's in the path through the graph — the sequence of decisions, incidents, and engineering reasoning that produced the current state.
+
+## Building it from git history
+
+Git history gives us a starting point. From commit metadata alone, we can extract: authorship patterns, file co-change relationships (files that are always committed together are probably coupled), the temporal evolution of different subsystems, and rough ownership signals.
+
+But git history alone doesn't capture reasoning. That comes from the commit messages (when they're good), the linked issues and PRs, the code review discussions, and the internal communications that happened around significant changes.
+
+Tsuin ingests all of these signals and builds a unified graph where every node is connected to its context.
+
+## What this enables
+
+The practical output is simple: when you need to understand a part of the system, your Twin can explain it — not by reading the code, but by surfacing the human reasoning that shaped it.
+
+The technical complexity lives under the hood. The interface is just: ask, and understand.

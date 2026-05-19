@@ -1,0 +1,32 @@
+---
+title: "The 2am Incident and the Decision No One Remembered"
+category: Engineering
+author: Tsuin Team
+date: "2025-12-30"
+readTime: "5 min read"
+color: from-red-500/30 to-orange-400/10
+---
+
+The alert fires at 2:14am. The on-call engineer opens their laptop, pulls up the runbook, and starts working through the checklist. The service is throwing 500s. The logs aren't telling the full story.
+
+Then they hit a block: the error trace points to a module that has a comment saying *temporary workaround — see decision doc*. The decision doc link is broken. The engineer who wrote it left the company eight months ago.
+
+This is a fictional scenario, but it's recognizable to almost every engineer who's been on-call.
+
+## Why incidents surface the worst gaps
+
+Incident response is a high-stakes, low-information environment. You're making decisions quickly. You need to understand not just what the system is doing but *why it was built to do that*. Constraints that were obvious to the original team are opaque to the on-call engineer who inherited the service.
+
+The 2am incident is when context loss has its sharpest edge. It's when the difference between having institutional knowledge and not having it is measured in hours of downtime.
+
+## The decision that wasn't documented
+
+Usually it's not that the team didn't care about documentation. It's that the decision was made under pressure — a deadline, a production issue, a quick patch — and the context never got written down because there wasn't time.
+
+Or the context was written down, in a Slack message at 11pm, and it's been buried under ten thousand messages since.
+
+## Making incident context accessible
+
+A cognitive twin built on the reasoning of your engineering team can surface that context at exactly the moment you need it. What were the known failure modes of this service? What decisions shaped this module? What were the engineers thinking when they wrote this workaround?
+
+Not because the twin is smart. Because it has memory, and memory is what incident response most often lacks.
